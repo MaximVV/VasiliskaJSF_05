@@ -25,17 +25,7 @@
             <div class="welcome">
                 <h:form>
                     
-                     <p>
-
-                        <h:commandLink action="#{localeChanger.changeLocale('en')}">
-                            <h:graphicImage library="images" name="eng.png" title="#{msg.english}"/>
-
-                        </h:commandLink>
-
-                        <h:commandLink action = "#{localeChanger.changeLocale('ru')}">
-                            <h:graphicImage library="images" name="rus.png" title="#{msg.russian}"/>
-                        </h:commandLink>
-                    </p>
+                    <ui:include src="/templates/locales.xhtml"/>
 
                     <p><h5>#{msg.welcome},  #{user.username}</h5></p>
                     
