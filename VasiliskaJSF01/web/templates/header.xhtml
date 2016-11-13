@@ -23,15 +23,13 @@
             </div>
 
             <div class="welcome">
-                <h:form>
-                    
-                    <ui:include src="/templates/locales.xhtml"/>
+                
+                <ui:include src="/templates/locales.xhtml"/>
 
-                    <p><h5>#{msg.welcome},  #{user.username}</h5></p>
+                <p><h5>#{msg.welcome},  #{user.username}</h5></p>
                     
+                <h:form>           
                     <h:commandLink action="#{loginController.exit()}" value="#{msg.exit}"/>
-
-
                 </h:form>
             </div>
 
