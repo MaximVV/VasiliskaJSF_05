@@ -36,16 +36,27 @@
 
             <div class="search_div">
                 <h:form styleClass="search_form">
-                    <h:inputText id="search_string" styleClass="search_string" value="#{searchController.searchString}"/>                    
+                    <h:inputText id="search_string" styleClass="search_string" value="#{searchController.searchString}" valueChangeListener="#{searchController.searchStringChanged}">
+                        <f:ajax  event="change" />
+                    </h:inputText>
+                    
                                         
                     <h:commandButton value="#{msg.search}" styleClass="search_button">                        
                         <f:ajax onevent="showProgress" execute="@form" render=":goodsList @form :leftForm :lettersForm :pages1 :pages2 :goodsCount" listener="#{searchController.fillGoodsBySearch()}"/>
                     </h:commandButton>
-                    
-                    <h:selectOneMenu value="#{searchController.searchType}">
-                        <f:selectItems value="${searchTypeController.searchList}" />
-                    </h:selectOneMenu>
                 </h:form>
+                
+                <h:form styleClass="search_type">
+                                       
+                    
+                    <h:selectOneMenu styleClass="search_type_dropdown" value="#{searchController.searchType}" valueChangeListener="#{searchController.searchTypeChanged}">
+                        <f:selectItems value="${searchTypeController.searchList}" />
+                        <f:ajax event="change"/>
+                    </h:selectOneMenu>
+                    
+                    
+                </h:form>
+                
             </div>
             
             <div class="letters">
