@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import com.vasiliskavrn.shop.web.beans.Goods;
 import com.vasiliskavrn.shop.web.db.Database;
 import com.vasiliskavrn.shop.web.enums.SearchType;
+import javax.faces.event.ValueChangeEvent;
 
 @ManagedBean
 @SessionScoped
@@ -336,6 +337,14 @@ public class SearchController implements Serializable {
         return letters;
     }
     
+    
+    public void searchStringChanged(ValueChangeEvent e) {
+        searchString = e.getNewValue().toString();
+    }
+    
+    public void searchTypeChanged(ValueChangeEvent e) {
+        searchType = (SearchType) e.getNewValue();
+    }
     
     private void fillPageNumbers(long totalClothCount, int clothCountOnPage) {
 
