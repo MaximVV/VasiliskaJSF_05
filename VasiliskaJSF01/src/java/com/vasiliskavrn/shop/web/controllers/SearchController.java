@@ -17,6 +17,7 @@ import javax.faces.context.FacesContext;
 import com.vasiliskavrn.shop.web.beans.Goods;
 import com.vasiliskavrn.shop.web.db.Database;
 import com.vasiliskavrn.shop.web.enums.SearchType;
+import java.sql.PreparedStatement;
 import javax.faces.event.ValueChangeEvent;
 
 @ManagedBean
@@ -296,6 +297,66 @@ public class SearchController implements Serializable {
         }
 
         return image;
+    }
+    
+    public String updateGoods() {
+        imitateLoading();
+
+        PreparedStatement prepStmt = null;
+        ResultSet rs = null;
+        Connection conn = null;
+
+        try {
+            conn = Database.getConnection();
+            prepStmt = conn.prepareStatement("update vasiliska2016.goods_tab set name=?, firme_name=?, price_val=? where id=?");
+            //prepStmt = conn.prepareStatement("update vasiliska2016.goods_tab set name=?, isbn=?, page_count=?, publish_year=?, descr=? where id=?");
+
+            
+            for (Goods goods : currentGoodsList) {
+                prepStmt.setString(1, goods.getName());
+                prepStmt.setString(2, goods.getFirme());
+//                prepStmt.setString(3, book.getAuthor());
+//                prepStmt.setString(3, goods.getCountryMade());
+                prepStmt.setString(4, goods.getPrice());
+//                prepStmt.setString(6, book.getPublisher());
+//                prepStmt.setString(5, goods.getDescr());
+                prepStmt.setLong(6, goods.getId());
+                prepStmt.addBatch();
+            }
+
+            prepStmt.executeBatch();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (prepStmt != null) {
+                    prepStmt.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        switchEditMode();
+        return "goods";
+    }
+    
+    
+    private boolean editMode;
+
+    public boolean isEditMode() {
+        return editMode;
+    }
+
+    public void switchEditMode() {
+        editMode = !editMode;
     }
 
     public Character[] getRussianLetters() {
