@@ -41,7 +41,7 @@
                             <h:graphicImage library="images" name="edit.jpg" />
                             <h:outputText value="#{msg.edit_goods}"></h:outputText>
                             <f:ajax onevent="showProgress" execute="@form" render="@form" />
-                            <script> alert(#{searchController.editMode}); </script>
+                            
                     </h:commandLink> 
                     
 
@@ -52,12 +52,9 @@
 
                     <h:commandButton immediate="true" action="#{searchController.cancelEdit}" rendered="#{searchController.editMode}" value="#{msg.cancel}">
                             <f:ajax onevent="showProgress" execute="@form" render="@form" />
-                             <script> alert(#{searchController.editMode}); </script>
-                    </h:commandButton>  
-                    
-                    <h:commandButton immediate="true" action="#{searchController.editMode}" rendered="true" value="#{msg.cancel}">
-                               <script> alert(#{searchController.editMode}); </script>
-                    </h:commandButton> 
+                            
+                    </h:commandButton>                      
+               
 
                 </h:panelGroup>
 
@@ -90,7 +87,7 @@
                             
                             
                             <p>
-                                <strong>#{msg.goods_firme}:</strong> 
+                                <strong>#{msg.goods_firme}</strong> 
                                 <h:outputText value="#{b.firme}" rendered="#{!searchController.editMode}"/>
                                 <h:inputText value="#{b.firme}" styleClass="name_edit" rendered="#{searchController.editMode and b.edit}"/>
                             </p>
