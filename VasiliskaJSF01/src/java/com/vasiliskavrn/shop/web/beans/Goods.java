@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Goods implements Serializable{
            
-     
+    private boolean edit;
     private String article;    
     private String sex;     
     private String name;  
@@ -114,6 +114,14 @@ public class Goods implements Serializable{
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+    
+    public boolean isEdit() {
+        return edit;
+    }
+
+    public void setEdit(boolean edit) {
+        this.edit = edit;
     }
 
     

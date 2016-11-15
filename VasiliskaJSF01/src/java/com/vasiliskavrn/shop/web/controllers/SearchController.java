@@ -76,14 +76,8 @@ public class SearchController implements Serializable {
 
     public SearchController() {
         
-         fillGoodsAll();
-        
-//        ResourceBundle bundle = ResourceBundle.getBundle("com.vasiliskavrn.shop.web.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
-//        searchList.put(bundle.getString("for_all"), SearchType.FOR_ALL);
-//        searchList.put(bundle.getString("for_boy"), SearchType.FOR_BOY);
-//        searchList.put(bundle.getString("for_girl"), SearchType.FOR_GIRL);
-//        searchList.put(bundle.getString("for_man"), SearchType.FOR_MAN);
-//        searchList.put(bundle.getString("for_women"), SearchType.FOR_WOMEN);
+         fillGoodsAll();        
+
         
     }
 
@@ -108,13 +102,12 @@ public class SearchController implements Serializable {
 
             System.out.println(requestFromPager);
             if (!requestFromPager) {
-
+                
                 rs = stmt.executeQuery(sqlBuilder.toString());
                 rs.last();
 
                 totalGoodsCount = rs.getRow();
-                fillPageNumbers(totalGoodsCount, goodsOnPage);
-            
+                fillPageNumbers(totalGoodsCount, goodsOnPage);            
             }
             
             
@@ -313,6 +306,7 @@ public class SearchController implements Serializable {
 
             
             for (Goods goods : currentGoodsList) {
+                if (!goods.isEdit()) continue;
                 prepStmt.setString(1, goods.getName());
                 prepStmt.setString(2, goods.getFirme());
 //                prepStmt.setString(3, book.getAuthor());
@@ -344,7 +338,7 @@ public class SearchController implements Serializable {
             }
         }
 
-        switchEditMode();
+        cancelEdit();
         return "goods";
     }
     
@@ -355,8 +349,16 @@ public class SearchController implements Serializable {
         return editMode;
     }
 
-    public void switchEditMode() {
-        editMode = !editMode;
+    public void showEdit() {
+        
+        editMode = true;        
+    }
+    
+     public void cancelEdit(){
+        editMode = false;
+        for (Goods goods : currentGoodsList) {
+            goods.setEdit(false);
+        }
     }
 
     public Character[] getRussianLetters() {

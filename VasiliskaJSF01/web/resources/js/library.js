@@ -20,3 +20,12 @@ function showProgress(data) {
     }
 }
 
+
+function checkTest(form, message) {
+    
+        alert(message);
+   
+    
+    return true;
+}
+

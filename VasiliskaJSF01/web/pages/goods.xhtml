@@ -8,6 +8,7 @@
     
     <h:head>
         <title>Facelet Title</title>
+        
     </h:head>
     <h:body>
         <ui:composition template="/templates/shop_template.xhtml">
@@ -36,26 +37,32 @@
                     </h:commandLink>
                     
 
-                    <h:commandLink action="#{searchController.switchEditMode}" rendered="#{!searchController.editMode}">
+                    <h:commandLink action="#{searchController.showEdit}" rendered="#{!searchController.editMode}">
                             <h:graphicImage library="images" name="edit.jpg" />
-                            <h:outputText value="#{msg.edit}"></h:outputText>
+                            <h:outputText value="#{msg.edit_goods}"></h:outputText>
                             <f:ajax onevent="showProgress" execute="@form" render="@form" />
+                            <script> alert(#{searchController.editMode}); </script>
                     </h:commandLink> 
                     
 
                     <h:commandButton action="#{searchController.updateGoods()}" rendered="#{searchController.editMode}" value="#{msg.save}">
+                             <f:ajax onevent="showProgress" execute="@form" render="@form" />
                             
                     </h:commandButton>                    
 
-                    <h:commandButton immediate="true" action="#{searchController.switchEditMode()}" rendered="#{searchController.editMode}" value="#{msg.cancel}">
-                            
+                    <h:commandButton immediate="true" action="#{searchController.cancelEdit}" rendered="#{searchController.editMode}" value="#{msg.cancel}">
+                            <f:ajax onevent="showProgress" execute="@form" render="@form" />
+                             <script> alert(#{searchController.editMode}); </script>
                     </h:commandButton>  
+                    
+                    <h:commandButton immediate="true" action="#{searchController.editMode}" rendered="true" value="#{msg.cancel}">
+                               <script> alert(#{searchController.editMode}); </script>
+                    </h:commandButton> 
 
                 </h:panelGroup>
 
 
-                <h:dataTable id="goodsList" value="#{searchController.currentGoodsList}" var="b" cellspacing="10px" columnClasses="col1, col2, col3"> 
-                                    
+                <h:dataTable id="goodsList" value="#{searchController.currentGoodsList}" var="b" cellspacing="10px" columnClasses="col1, col2, col3">                                     
                     <h:column>
                         
                         <h:outputLink value="" target="_blank">
@@ -69,22 +76,29 @@
 
                         <div>
                             <p> 
-                                <strong>#{msg.name_goods}:</strong> 
-                                <h:outputText value="#{b.name}" rendered="#{!searchController.editMode}"/>
-                                <h:inputText value="#{b.name}" styleClass="name_edit" rendered="#{searchController.editMode}"/>
+                                                                
+                                <h:outputLink value="" target="_blank" rendered="#{!b.edit}">
+                                        <h:outputText value="#{b.name}" ></h:outputText>
+                                        <f:param name="id" value="#{b.id}"/>
+
+                                </h:outputLink>
+
+                                <h:inputText value="#{b.name}" styleClass="name_edit" rendered="#{searchController.editMode and b.edit}"/>
+                                
+                                
                             </p>
                             
                             
                             <p>
                                 <strong>#{msg.goods_firme}:</strong> 
                                 <h:outputText value="#{b.firme}" rendered="#{!searchController.editMode}"/>
-                                <h:inputText value="#{b.firme}" styleClass="name_edit" rendered="#{searchController.editMode}"/>
+                                <h:inputText value="#{b.firme}" styleClass="name_edit" rendered="#{searchController.editMode and b.edit}"/>
                             </p>
                             
                             <p>
                                 <strong>#{msg.price}</strong> 
                                 <h:outputText value="#{b.price}" rendered="#{!searchController.editMode}"/>
-                                <h:inputText value="#{b.price}" styleClass="name_edit" rendered="#{searchController.editMode}"/>
+                                <h:inputText value="#{b.price}" styleClass="name_edit" rendered="#{searchController.editMode and b.edit}"/>
                             </p>
 
                         </div>
@@ -96,6 +110,11 @@
                            <p><strong>#{msg.descr}</strong></p>
                            <p >#{b.countryBrand}</p>
                         </div>
+                    </h:column>
+                    
+                    
+                    <h:column>      
+                            <h:selectBooleanCheckbox value="#{b.edit}" rendered="#{!searchController.editMode}"/>                              
                     </h:column>
                     
                     
