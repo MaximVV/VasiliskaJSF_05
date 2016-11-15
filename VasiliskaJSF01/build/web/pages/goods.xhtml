@@ -97,6 +97,12 @@
                                 <h:outputText value="#{b.price}" rendered="#{!searchController.editMode}"/>
                                 <h:inputText value="#{b.price}" styleClass="name_edit" rendered="#{searchController.editMode and b.edit}"/>
                             </p>
+                            
+                             <p>
+                                 <strong>#{msg.article}</strong> 
+                                 <h:outputText value="#{b.article}" rendered="#{!searchController.editMode}"/>
+                                 <h:inputText value="#{b.article}" styleClass="name_edit" rendered="#{searchController.editMode and b.edit}"/>
+                            </p>
 
                         </div>
 
@@ -124,15 +130,38 @@
             
             <ui:define name="paginator">
                         
-                     <h:form rendered="#{searchController.totalGoodsCount > searchController.goodsOnPage}">
-                            #{msg.pager}
+                          
+                    
+                    <h:form>
 
-                            <ui:repeat value="#{searchController.pageNumbers}" var="pageNumber" >
-                                <h:commandLink value="#{pageNumber}" action="#{searchController.selectPage()}"  styleClass="#{pageNumber == searchController.selectedPageNumber ? 'selected_page':''}">
-                                    <f:param name="page_number" value="#{pageNumber}" />
-                                </h:commandLink>
-                            </ui:repeat>
-                    </h:form>
+                        <h:selectOneMenu styleClass="books_on_page_dropdown" value="#{searchController.goodsOnPage}" valueChangeListener="#{searchController.goodsOnPageChanged}">
+                        <f:selectItem itemValue="5" />
+                        <f:selectItem itemValue="10" />
+                        <f:selectItem itemValue="30" />
+                        <f:selectItem itemValue="50" />
+                        <f:ajax event="change" execute="@form" onevent="showProgress" render=":goodsForm :goodsForm:goodsList :pages1 :pages2"  />
+                    </h:selectOneMenu>
+
+                    #{msg.pager}
+                    <ui:repeat value="#{searchController.pageNumbers}" var="pageNumber" >
+
+                        <h:outputText value="#{pageNumber}" rendered="#{pageNumber == searchController.selectedPageNumber}" styleClass="selected_page"/>
+
+
+                        <h:commandLink value="#{pageNumber}" rendered="#{pageNumber != searchController.selectedPageNumber}" styleClass="page_number">
+                            <f:param name="page_number" value="#{pageNumber}" />
+                            <f:ajax onevent="showProgress" event="click" render=":goodsForm :goodsForm:goodsList :lettersForm :pages1 :pages2" listener="#{searchController.selectPage()}"/>
+                        </h:commandLink>
+                    </ui:repeat>
+
+
+
+
+                </h:form>
+                
+                
+                
+                  
 
 
             </ui:define>             

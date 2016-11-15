@@ -24,6 +24,7 @@ import javax.faces.event.ValueChangeEvent;
 @SessionScoped
 public class SearchController implements Serializable {
 
+    private int pageCount;// кол-во страниц
     private boolean requestFromPager;
     private int selectedClothId; // выбранный раздел одежды
     private char selectedLetter; // выбранная буква алфавита
@@ -245,6 +246,7 @@ public class SearchController implements Serializable {
      
     
     public void selectPage() {
+        cancelEdit();
         imitateLoading();
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         selectedPageNumber = Integer.valueOf(params.get("page_number"));
@@ -307,6 +309,7 @@ public class SearchController implements Serializable {
             
             for (Goods goods : currentGoodsList) {
                 if (!goods.isEdit()) continue;
+                prepStmt.setString(1, goods.getArticle());
                 prepStmt.setString(1, goods.getName());
                 prepStmt.setString(2, goods.getFirme());
 //                prepStmt.setString(3, book.getAuthor());
@@ -409,9 +412,24 @@ public class SearchController implements Serializable {
         searchType = (SearchType) e.getNewValue();
     }
     
-    private void fillPageNumbers(long totalClothCount, int clothCountOnPage) {
+    
+    
+    public void goodsOnPageChanged(ValueChangeEvent e) {
+        imitateLoading();
+        cancelEdit();
+        requestFromPager = false;
+        goodsOnPage = Integer.valueOf(e.getNewValue().toString()).intValue();
+        selectedPageNumber = 1;
+        fillGoodsBySQL(currentSql);        
+    }
+    
+   private void fillPageNumbers(long totalGoodsCount, int goodsCountOnPage) {
 
-        int pageCount = clothCountOnPage > 0 ? (int) ((totalClothCount / clothCountOnPage) + 1) : 0;
+        if (totalGoodsCount % goodsCountOnPage == 0) {
+            pageCount = goodsCountOnPage > 0 ? (int) (totalGoodsCount / goodsCountOnPage) : 0;
+        } else {
+            pageCount = goodsCountOnPage > 0 ? (int) (totalGoodsCount / goodsCountOnPage) + 1 : 0;
+        }
 
         pageNumbers.clear();
         for (int i = 1; i <= pageCount; i++) {
