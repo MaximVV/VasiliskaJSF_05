@@ -75,7 +75,8 @@
 
                             <tr>
                                 <td colspan="3">
-                                    <h:commandButton action="pages/goods?faces-redirect=true" value="#{msg.entry}" styleClass="login_button" onclick="return checkValue(this.form, '#{msg.login_required}');">
+                                    <h:commandButton action="#{user.login()}" value="#{msg.entry}" styleClass="login_button" onclick="return checkValue(this.form, '#{msg.login_required}');">
+                                        <f:ajax onevent="showProgress" execute="@form" render="@form" />
 
                                     </h:commandButton>
                                 </td>
