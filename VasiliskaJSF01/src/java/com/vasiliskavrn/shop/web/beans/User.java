@@ -1,6 +1,7 @@
 package com.vasiliskavrn.shop.web.beans;
 
 import java.io.Serializable;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -13,11 +14,11 @@ import com.vasiliskavrn.shop.web.controllers.SearchController;
 
 @ManagedBean
 @SessionScoped
-public class User implements Serializable{
+public class User implements Serializable {
 
-    private String username = "user";
-    private String password = "user";
-    
+    private String username;
+    private String password;
+
     public User() {
     }
 
@@ -28,7 +29,7 @@ public class User implements Serializable{
     public void setUsername(String username) {
         this.username = username;
     }
-    
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -41,6 +42,12 @@ public class User implements Serializable{
     public String login() {
         try {
 
+            try {
+                Thread.sleep(1000);// имитация загрузки процесса
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
 //            ((HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest()).logout();
 //            FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 
@@ -48,9 +55,10 @@ public class User implements Serializable{
 
             return "goods";
         } catch (ServletException ex) {
+            ResourceBundle bundle = ResourceBundle.getBundle("com.vasiliskavrn.shop.web.nls.messages", FacesContext.getCurrentInstance().getViewRoot().getLocale());
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
             FacesContext context = FacesContext.getCurrentInstance();
-            FacesMessage message = new FacesMessage("Логин и пароль не подходят");
+            FacesMessage message = new FacesMessage(bundle.getString("login_error"));
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             context.addMessage("login_form", message);
 
@@ -76,9 +84,5 @@ public class User implements Serializable{
 
         return result;
     }
-    
-
-
-    
     
 }
