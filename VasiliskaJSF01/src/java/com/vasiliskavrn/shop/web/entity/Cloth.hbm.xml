@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 11, 2016 2:21:05 PM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.vasiliskavrn.shop.web.entity.Cloth" table="cloth" catalog="vasiliska2016" optimistic-lock="version">
+        <id name="idCloth" type="int">
+            <column name="id_cloth" />
+            <generator class="assigned" />
+        </id>
+        <property name="clothName" type="string">
+            <column name="cloth_name" length="100" />
+        </property>
+        <property name="clothNameOne" type="string">
+            <column name="cloth_name_one" length="100" />
+        </property>
+        <property name="clothStatus" type="string">
+            <column name="cloth_status" length="1" />
+        </property>
+        <set name="goodses" table="goods" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="goods_cloth" />
+            </key>
+            <one-to-many class="com.vasiliskavrn.shop.web.entity.Goods" />
+        </set>
+    </class>
+</hibernate-mapping>
