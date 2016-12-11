@@ -34,11 +34,11 @@ public class ClothController implements Serializable {
             conn = Database.getConnection();
 
             stmt = conn.createStatement();
-            rs = stmt.executeQuery("select * from vasiliska2016.cloth_tab order by cloth_name");
+            rs = stmt.executeQuery("select * from vasiliska2016.cloth order by cloth_name");
             while (rs.next()) {
                 Cloth cloth  = new Cloth ();
                 cloth.setName(rs.getString("cloth_name"));
-                cloth.setId(rs.getLong("id_cloth_tab"));
+                cloth.setId(rs.getLong("id_cloth"));
                 clothList.add(cloth);
             }
 

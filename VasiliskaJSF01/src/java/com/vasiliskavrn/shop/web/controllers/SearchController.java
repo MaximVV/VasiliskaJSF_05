@@ -39,7 +39,7 @@ public class SearchController implements Serializable {
     private String currentSql;// последний выполнный sql без добавления limit
     
     public final String DEFAULT_SQL = "SELECT g.goods_id,g.goods_art,\n" +
-"	   ct.cloth_name_one,\n" +
+"	ct.cloth_name_one,\n" +
 "       s.sex_name,\n" +
 "       pr.prod_country,\n" +
 "       cm.comp_name,\n" +
@@ -49,28 +49,28 @@ public class SearchController implements Serializable {
 "       sz.size_name,\n" +
 "       b.brand_country,\n" +
 "       i.image_cotnent\n" +
-"  FROM vasiliska2016.goods_tab g,\n" +
-"       vasiliska2016.cloth_tab ct,\n" +
-"	vasiliska2016.sex_tab   s,\n" +
-"       vasiliska2016.producer_tab pr,\n" +
-"       vasiliska2016.composition_tab cm,\n" +
-"       vasiliska2016.price_tab p,\n" +
-"       vasiliska2016.firme_tab f,\n" +
-"       vasiliska2016.color_tab c,\n" +
-"       vasiliska2016.size_tab  sz,\n" +
-"       vasiliska2016.brand_tab  b,\n" +
-"       vasiliska2016.image_tab  i\n" +
+"  FROM vasiliska2016.goods g,\n" +
+"       vasiliska2016.cloth ct,\n" +
+"	vasiliska2016.sex   s,\n" +
+"       vasiliska2016.producer pr,\n" +
+"       vasiliska2016.composition cm,\n" +
+"       vasiliska2016.price p,\n" +
+"       vasiliska2016.firme f,\n" +
+"       vasiliska2016.color c,\n" +
+"       vasiliska2016.size  sz,\n" +
+"       vasiliska2016.brand  b,\n" +
+"       vasiliska2016.image  i\n" +
 " WHERE 1=1\n" +
-"   and g.goods_cloth = ct.id_cloth_tab\n" +
-"   and g.goods_sex = s.id_sex_tab\n" +
-"   and g.goods_produser = pr.id_producer_tab\n" +
-"   and g.goods_comp = cm.id_comp_tab\n" +
-"   and g.goods_price = p.id_price_tab\n" +
-"   and g.goods_firm = f.id_firme_table\n" +
-"   and g.goods_color = c.id_color_tab\n" +
-"   and g.goods_size = sz.id_size_table\n" +
-"   and g.goods_coun_br = b.id_brand_tab\n" +
-"   and g.goods_image = i.id_image_tab ";
+"   and g.goods_cloth = ct.id_cloth\n" +
+"   and g.goods_sex = s.id_sex\n" +
+"   and g.goods_produser = pr.id_producer\n" +
+"   and g.goods_comp = cm.id_comp\n" +
+"   and g.goods_price = p.id_price\n" +
+"   and g.goods_firm = f.id_firme\n" +
+"   and g.goods_color = c.id_color\n" +
+"   and g.goods_size = sz.id_size\n" +
+"   and g.goods_coun_br = b.id_brand\n" +
+"   and g.goods_image = i.id_image ";
 
     
     
@@ -185,7 +185,7 @@ public class SearchController implements Serializable {
 //        Integer cloth_id = Integer.valueOf(params.get("cloth_id"));
         
         StringBuilder sql = new StringBuilder(DEFAULT_SQL);
-        sql.append("   and ct.id_cloth_tab = "+ selectedClothId + " order by ct.cloth_name_one ");
+        sql.append("   and ct.id_cloth = "+ selectedClothId + " order by ct.cloth_name_one ");
         System.out.println(sql.toString());
         fillGoodsBySQL(sql.toString());
         
@@ -265,8 +265,8 @@ public class SearchController implements Serializable {
             conn = Database.getConnection();
             stmt = conn.createStatement();
 
-            rs = stmt.executeQuery(" select i.image_cotnent FROM vasiliska2016.goods_tab g, vasiliska2016.image_tab  i "
-                                    + "WHERE g.goods_image = i.id_image_tab and g.goods_id=" + id);
+            rs = stmt.executeQuery(" select i.image_cotnent FROM vasiliska2016.goods g, vasiliska2016.image  i "
+                                    + "WHERE g.goods_image = i.id_image and g.goods_id=" + id);
             while (rs.next()) {
                 image = rs.getBytes("image_cotnent");
             }
@@ -303,8 +303,8 @@ public class SearchController implements Serializable {
 
         try {
             conn = Database.getConnection();
-            prepStmt = conn.prepareStatement("update vasiliska2016.goods_tab set name=?, firme_name=?, price_val=? where id=?");
-            //prepStmt = conn.prepareStatement("update vasiliska2016.goods_tab set name=?, isbn=?, page_count=?, publish_year=?, descr=? where id=?");
+            prepStmt = conn.prepareStatement("update vasiliska2016.goods set name=?, firme_name=?, price_val=? where id=?");
+            //prepStmt = conn.prepareStatement("update vasiliska2016.goods set name=?, isbn=?, page_count=?, publish_year=?, descr=? where id=?");
 
             
             for (Goods goods : currentGoodsList) {
