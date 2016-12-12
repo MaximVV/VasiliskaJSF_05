@@ -11,7 +11,7 @@ import java.util.Set;
 public class Cloth  implements java.io.Serializable {
 
 
-     private int idCloth;
+     private Long idCloth;
      private String clothName;
      private String clothNameOne;
      private String clothStatus;
@@ -21,10 +21,10 @@ public class Cloth  implements java.io.Serializable {
     }
 
 	
-    public Cloth(int idCloth) {
+    public Cloth(Long idCloth) {
         this.idCloth = idCloth;
     }
-    public Cloth(int idCloth, String clothName, String clothNameOne, String clothStatus, Set goodses) {
+    public Cloth(Long idCloth, String clothName, String clothNameOne, String clothStatus, Set goodses) {
        this.idCloth = idCloth;
        this.clothName = clothName;
        this.clothNameOne = clothNameOne;
@@ -32,11 +32,11 @@ public class Cloth  implements java.io.Serializable {
        this.goodses = goodses;
     }
    
-    public int getIdCloth() {
+    public Long getIdCloth() {
         return this.idCloth;
     }
     
-    public void setIdCloth(int idCloth) {
+    public void setIdCloth(Long idCloth) {
         this.idCloth = idCloth;
     }
     public String getClothName() {

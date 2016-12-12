@@ -4,7 +4,7 @@
 <!-- Generated Dec 11, 2016 2:21:05 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="com.vasiliskavrn.shop.web.entity.Cloth" table="cloth" catalog="vasiliska2016" optimistic-lock="version">
-        <id name="idCloth" type="int">
+        <id name="idCloth" type="java.lang.Long">
             <column name="id_cloth" />
             <generator class="assigned" />
         </id>

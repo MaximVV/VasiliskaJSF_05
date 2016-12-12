@@ -1,141 +1,120 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-          
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
     <h:head>
         <title>Facelet Title</title>
-        
     </h:head>
+    
     <h:body>
         <ui:composition template="/templates/shop_template.xhtml">
 
-            
             <ui:define name="goods_count">
-                
-                 <h:outputText value="#{msg.goods_count} #{searchController.totalGoodsCount}" id="goodsCount"></h:outputText> 
+                <h:outputText value="#{msg.goods_count} #{searchController.totalGoodsCount}" id="goodsCount"></h:outputText> 
             </ui:define>           
-            
 
             <ui:define name="title">
                 #{msg.cloth_list}
             </ui:define>
 
-            <ui:define name="content">
-                
-            <h:form id="goodsForm">  
-                
-                 
-                <h:panelGroup id ="admin_tools" rendered="#{request.isUserInRole('admin')}">   
+            <ui:define name="content" >
 
-                    <h:commandLink rendered="#{!searchController.editMode}">
+                <h:form id="goodsForm" rendered= "true">  
+
+                    <h:panelGroup id ="admin_tools" rendered="#{request.isUserInRole('admin')}">   
+
+                        <h:commandLink rendered="#{!searchController.editMode}">
                             <h:graphicImage library="images" name="add.jpg" />
                             <h:outputText value="#{msg.add_goods}"></h:outputText>
                             <f:ajax onevent="showProgress" execute="@form" render="@form" />
-                    </h:commandLink>
-                    
+                        </h:commandLink>
 
-                    <h:commandLink action="#{searchController.showEdit}" rendered="#{!searchController.editMode}">
+                        <h:commandLink action="#{searchController.showEdit}" rendered="#{!searchController.editMode}">
                             <h:graphicImage library="images" name="edit.jpg" />
                             <h:outputText value="#{msg.edit_goods}"></h:outputText>
                             <f:ajax onevent="showProgress" execute="@form" render="@form" />
-                            
-                    </h:commandLink> 
-                    
+                        </h:commandLink> 
 
-                    <h:commandButton action="#{searchController.updateGoods()}" rendered="#{searchController.editMode}" value="#{msg.save}">
-                             <f:ajax onevent="showProgress" execute="@form" render="@form" />
-                            
-                    </h:commandButton>                    
-
-                    <h:commandButton immediate="true" action="#{searchController.cancelEdit}" rendered="#{searchController.editMode}" value="#{msg.cancel}">
+                        <h:commandButton action="#{searchController.updateGoods()}" rendered="#{searchController.editMode}" value="#{msg.save}">
                             <f:ajax onevent="showProgress" execute="@form" render="@form" />
-                            
-                    </h:commandButton>                      
-               
+                        </h:commandButton>                    
 
-                </h:panelGroup>
+                        <h:commandButton immediate="true" action="#{searchController.cancelEditMode}" rendered="#{searchController.editMode}" value="#{msg.cancel}">
+                            <f:ajax onevent="showProgress" execute="@form" render="@form" />
+                        </h:commandButton>                      
+
+                    </h:panelGroup>
 
 
-                <h:dataTable id="goodsList" value="#{searchController.currentGoodsList}" var="b" cellspacing="10px" columnClasses="col1, col2, col3">                                     
-                    <h:column>
-                        
-                        <h:outputLink value="" target="_blank">
-                           
-                            <h:graphicImage  value="/ShowImage?id=#{b.id}" width="160" height="220"/>
-                        </h:outputLink>
-                        
-                    </h:column>
-                    
-                    <h:column>
+                    <h:dataTable id="goodsList" value="#{searchController.currentGoodsList}" var="b" cellspacing="10px" columnClasses="col1, col2, col3">                                     
+                        <h:column>
+                            <h:outputLink value="" target="_blank">
+                                <h:graphicImage  value="/ShowImage?id=#{b.image.idImage}" width="160" height="220"/>
+                            </h:outputLink>
+                        </h:column>
 
-                        <div>
-                            <p> 
-                                                                
-                                <h:outputLink value="" target="_blank" rendered="#{!b.edit}">
-                                        <h:outputText value="#{b.name}" ></h:outputText>
-                                        <f:param name="id" value="#{b.id}"/>
+                        <h:column>
+                            <div>
+                                <p>
+                                    <h:outputLink value="" target="_blank" rendered="#{!b.edit}">
+                                        <h:outputText value="#{b.goodsArt}" ></h:outputText>
+                                        <f:param name="id" value="#{b.cloth.idCloth}"/>
+                                    </h:outputLink>
+                                    <h:inputText value="#{b.goodsArt}" styleClass="name_edit" rendered="#{b.edit}"/>
+                                </p>
 
-                                </h:outputLink>
+                                <p>
+                                    <strong>#{msg.goods_firme}</strong> 
+                                    <h:outputText value="#{b.goodsArt}" rendered="#{!b.edit}"/>
+                                    <h:inputText value="#{b.goodsArt}" styleClass="name_edit" rendered="#{b.edit}"/>
+                                </p>
 
-                                <h:inputText value="#{b.name}" styleClass="name_edit" rendered="#{searchController.editMode and b.edit}"/>
-                                
-                                
-                            </p>
-                            
-                            
-                            <p>
-                                <strong>#{msg.goods_firme}</strong> 
-                                <h:outputText value="#{b.firme}" rendered="#{!searchController.editMode}"/>
-                                <h:inputText value="#{b.firme}" styleClass="name_edit" rendered="#{searchController.editMode and b.edit}"/>
-                            </p>
-                            
-                            <p>
-                                <strong>#{msg.price}</strong> 
-                                <h:outputText value="#{b.price}" rendered="#{!searchController.editMode}"/>
-                                <h:inputText value="#{b.price}" styleClass="name_edit" rendered="#{searchController.editMode and b.edit}"/>
-                            </p>
-                            
-                             <p>
-                                 <strong>#{msg.article}</strong> 
-                                 <h:outputText value="#{b.article}" rendered="#{!searchController.editMode}"/>
-                                 <h:inputText value="#{b.article}" styleClass="name_edit" rendered="#{searchController.editMode and b.edit}"/>
-                            </p>
+                                <p>
+                                    <strong>#{msg.price}</strong> 
+                                    <h:outputText value="#{b.goodsArt}" rendered="#{!searchController.editMode}"/>
+                                    <h:inputText value="#{b.goodsArt}" styleClass="name_edit" rendered="#{b.edit}"/>
+                                </p>
 
-                        </div>
+                                <p>
+                                    <strong>#{msg.article}</strong> 
+                                    <h:outputText value="#{b.goodsArt}" rendered="#{!searchController.editMode}"/>
+                                    <h:inputText value="#{b.goodsArt}" styleClass="name_edit" rendered="#{b.edit}"/>
+                                </p>
 
-                    </h:column>                  
+                            </div>
 
-                    <h:column>
-                        <div class="book_details">
-                           <p><strong>#{msg.descr}</strong></p>
-                           <p >#{b.countryBrand}</p>
-                        </div>
-                    </h:column>
-                    
-                    
-                    <h:column>      
+                        </h:column>                  
+
+                        <h:column>
+                            <div class="book_details">
+                                <p><strong>#{msg.descr}</strong></p>
+                                <p >#{b.goodsArt}</p>
+                            </div>
+                        </h:column>
+
+
+                        <h:column>      
                             <h:selectBooleanCheckbox value="#{b.edit}" rendered="#{!searchController.editMode}"/>                              
-                    </h:column>
-                    
-                    
-                </h:dataTable>
-                
-               </h:form>  
-                
-            </ui:define>
-            
-            
-            <ui:define name="paginator">
-                        
-                          
-                    
-                    <h:form>
+                        </h:column>
 
-                        <h:selectOneMenu styleClass="books_on_page_dropdown" value="#{searchController.goodsOnPage}" valueChangeListener="#{searchController.goodsOnPageChanged}">
+                    </h:dataTable>
+
+                </h:form>  
+
+            </ui:define>
+
+
+            <ui:define name="paginator">
+
+
+
+                <h:form rendered="false" >
+
+                    <h:selectOneMenu styleClass="books_on_page_dropdown" value="#{searchController.goodsOnPage}" valueChangeListener="#{searchController.changeGoodsCountOnPage}">
                         <f:selectItem itemValue="2" />
                         <f:selectItem itemValue="5" />
                         <f:selectItem itemValue="10" />
@@ -159,14 +138,9 @@
 
 
                 </h:form>
-                
-                
-                
-                  
-
 
             </ui:define>             
-            
+
 
         </ui:composition>
     </h:body>

@@ -1,68 +1,55 @@
 package com.vasiliskavrn.shop.web.controllers;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import com.vasiliskavrn.shop.web.beans.Cloth;
-import com.vasiliskavrn.shop.web.db.Database;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
+import javax.faces.model.SelectItem;
+import com.vasiliskavrn.shop.web.db.DataHelper;
+import com.vasiliskavrn.shop.web.entity.Cloth;
 
-@ManagedBean(eager = true)
+@ManagedBean(eager = false)
 @ApplicationScoped
-public class ClothController implements Serializable {
+public class ClothController implements Serializable, Converter {
 
-    private ArrayList<Cloth> clothList;
+    private List<SelectItem> selectItems = new ArrayList<SelectItem>();
+    private Map<Long, Cloth> clothMap;
+    private List<Cloth> clothList;
 
     public ClothController() {
-        fillClothsAll();
-    }
 
-    private void fillClothsAll() {
-        Statement stmt = null;
-        ResultSet rs = null;
-        Connection conn = null;
+        clothMap = new HashMap<Long, Cloth>();
+        clothList = DataHelper.getInstance().getAllCloths();
 
-        clothList = new ArrayList<Cloth>();
-
-        try {
-            conn = Database.getConnection();
-
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery("select * from vasiliska2016.cloth order by cloth_name");
-            while (rs.next()) {
-                Cloth cloth  = new Cloth ();
-                cloth.setName(rs.getString("cloth_name"));
-                cloth.setId(rs.getLong("id_cloth"));
-                clothList.add(cloth);
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(ClothController.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-                if (rs != null) {
-                    rs.close();
-                }
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(ClothController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        for (Cloth cloth : clothList) {
+            clothMap.put(cloth.getIdCloth(), cloth);
+            selectItems.add(new SelectItem(cloth, cloth.getClothName()));
         }
 
     }
 
-    public ArrayList<Cloth> getClothList() {
+    public List<SelectItem> getSelectItems() {
+        return selectItems;
+    }
+
+    // 
+    public List<Cloth> getClothList() {
         return clothList;
+    }
+
+    @Override
+    public Object getAsObject(FacesContext context, UIComponent component, String value) {
+        return clothMap.get(Long.valueOf(value));
+    }
+
+    @Override
+    public String getAsString(FacesContext context, UIComponent component, Object value) {
+        return ((Cloth) value).getIdCloth().toString();
     }
 }

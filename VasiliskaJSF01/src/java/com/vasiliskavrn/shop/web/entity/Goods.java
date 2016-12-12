@@ -8,7 +8,7 @@ package com.vasiliskavrn.shop.web.entity;
  */
 public class Goods  implements java.io.Serializable {
 
-
+     private boolean edit;
      private int goodsId;
      private Brand brand;
      private Cloth cloth;
@@ -138,6 +138,13 @@ public class Goods  implements java.io.Serializable {
         this.goodsStatus = goodsStatus;
     }
 
+    public boolean isEdit() {
+        return edit;
+    }
+
+    public void setEdit(boolean edit) {
+        this.edit = edit;
+    }
 
 
 
