@@ -52,8 +52,9 @@
 
                     <h:dataTable id="goodsList" value="#{searchController.currentGoodsList}" var="b" cellspacing="10px" columnClasses="col1, col2, col3">                                     
                         <h:column>
-                            <h:outputLink value="" target="_blank">
+                            <h:outputLink styleClass="content_link" value=""  target="_blank">
                                 <h:graphicImage  value="/ShowImage?id=#{b.image.idImage}" width="160" height="220"/>
+                                <f:param name="id" value="#{b.image.idImage}"/>
                             </h:outputLink>
                         </h:column>
 

@@ -33,7 +33,7 @@ public class ShowImage extends HttpServlet {
         response.setContentType("image/jpeg");
         OutputStream out = response.getOutputStream();
         try {
-            long id = Integer.valueOf(request.getParameter("id"));
+            int id = Integer.valueOf(request.getParameter("id"));
             byte[] image = DataHelper.getInstance().getImage(id);
             response.setContentLength(image.length);
             out.write(image);
