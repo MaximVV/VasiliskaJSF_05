@@ -12,6 +12,7 @@ import com.vasiliskavrn.shop.web.entity.Brand;
 import com.vasiliskavrn.shop.web.entity.Goods;
 import com.vasiliskavrn.shop.web.entity.Cloth;
 import com.vasiliskavrn.shop.web.entity.HibernateUtil;
+import com.vasiliskavrn.shop.web.entity.Image;
 
 public class DataHelper {
 
@@ -62,8 +63,8 @@ public class DataHelper {
 //        return (byte[]) getFieldValue("content", id);
 //    }
 
-    public byte[] getImage(Long id) {
-        return (byte[]) getFieldValue("image", id);
+    public byte[] getImage(int id) {
+        return (byte[]) getFieldValue("imageCotnent", id);
     }
 
     public Brand getBrand(long id) {
@@ -74,7 +75,7 @@ public class DataHelper {
         return getSession().createCriteria(Goods.class).add(Restrictions.ilike(field, value, matchMode)).list();
     }
 
-    private Object getFieldValue(String field, Long id) {
-        return getSession().createCriteria(Goods.class).setProjection(Projections.property(field)).add(Restrictions.eq("id", id)).uniqueResult();
+    private Object getFieldValue(String field, int id) {
+        return getSession().createCriteria(Image.class).setProjection(Projections.property(field)).add(Restrictions.eq("idImage", id)).uniqueResult();
     }
 }
