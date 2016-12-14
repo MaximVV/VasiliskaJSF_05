@@ -53,7 +53,7 @@ public class SearchController implements Serializable {
 
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
-        selectedClothId = Long.valueOf(params.get("idCloth"));
+        selectedClothId = Long.valueOf(params.get("cloth_id"));
 
         submitValues(' ', 1, selectedClothId, false);
         currentGoodsList = DataHelper.getInstance().getGoodsByCloth(selectedClothId);

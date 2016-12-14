@@ -22,7 +22,8 @@
                     <h:commandLink value="#{g.clothName}" styleClass="#{g.idCloth == searchController.selectedClothId ? 'selected_link':''}">
 
                         <f:param name="cloth_id" value="#{g.idCloth}" />
-                        <f:ajax onevent="showProgress" event="click" render=":goodsForm:goodsList @form :lettersForm :pages1 :pages2 :goodsCount" listener="#{searchController.fillGoodsByCloth()}"/>
+                        <f:ajax onevent="showProgress" event="click" render=":goodsForm:goodsList @form :lettersForm :pages1 :pages2 :goodsCount" 
+                        listener="#{searchController.fillGoodsByCloth()}"/>
 
                     </h:commandLink>
                     
