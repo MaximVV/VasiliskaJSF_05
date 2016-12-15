@@ -42,7 +42,8 @@
                     
                                         
                     <h:commandButton value="#{msg.search}" styleClass="search_button">                        
-                        <f:ajax onevent="showProgress" execute="@form" render=":goodsForm:goodsList @form :leftForm :lettersForm :pages1 :pages2 :goodsCount" listener="#{searchController.fillGoodsBySearch()}"/>
+                        <f:ajax onevent="showProgress" execute="@form" render=":goodsForm:goodsList @form :leftForm :lettersForm :pages1 :pages2 :goodsCount" 
+                                listener="#{searchController.fillGoodsBySearch()}"/>
                     </h:commandButton>
                 </h:form>
                 
@@ -68,7 +69,8 @@
                         <h:commandLink value="#{letter}" styleClass="#{letter == searchController.selectedLetter ? 'selected_letter':''}">
 
                            <f:param name="letter" value="#{letter}" />
-                           <f:ajax onevent="showProgress" event="click" render=":goodsForm:goodsList @form :leftForm :lettersForm :pages1 :pages2 :goodsCount" listener="#{searchController.fillGoodsByLetter()}"/>
+                           <f:ajax onevent="showProgress" event="click" render=":goodsForm:goodsList @form :leftForm :lettersForm :pages1 :pages2 :goodsCount" 
+                                   listener="#{searchController.fillGoodsByLetter()}"/>
 
                         </h:commandLink>
 
