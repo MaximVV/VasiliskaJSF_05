@@ -8,34 +8,34 @@
             <column name="goods_id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="brand" class="com.vasiliskavrn.shop.web.entity.Brand" fetch="select">
+        <many-to-one name="brand" class="com.vasiliskavrn.shop.web.entity.Brand" fetch="join">
             <column name="goods_coun_br" />
         </many-to-one>
-        <many-to-one name="cloth" class="com.vasiliskavrn.shop.web.entity.Cloth" fetch="select">
+        <many-to-one name="cloth" class="com.vasiliskavrn.shop.web.entity.Cloth" fetch="join">
             <column name="goods_cloth" />
         </many-to-one>
-        <many-to-one name="color" class="com.vasiliskavrn.shop.web.entity.Color" fetch="select">
+        <many-to-one name="color" class="com.vasiliskavrn.shop.web.entity.Color" fetch="join">
             <column name="goods_color" />
         </many-to-one>
-        <many-to-one name="composition" class="com.vasiliskavrn.shop.web.entity.Composition" fetch="select">
+        <many-to-one name="composition" class="com.vasiliskavrn.shop.web.entity.Composition" fetch="join">
             <column name="goods_comp" />
         </many-to-one>
-        <many-to-one name="firme" class="com.vasiliskavrn.shop.web.entity.Firme" fetch="select">
+        <many-to-one name="firme" class="com.vasiliskavrn.shop.web.entity.Firme" fetch="join">
             <column name="goods_firm" />
         </many-to-one>
-        <many-to-one name="image" class="com.vasiliskavrn.shop.web.entity.Image" fetch="select">
+        <many-to-one name="image" class="com.vasiliskavrn.shop.web.entity.Image" fetch="join">
             <column name="goods_image" />
         </many-to-one>
-        <many-to-one name="price" class="com.vasiliskavrn.shop.web.entity.Price" fetch="select">
+        <many-to-one name="price" class="com.vasiliskavrn.shop.web.entity.Price" fetch="join">
             <column name="goods_price" />
         </many-to-one>
-        <many-to-one name="producer" class="com.vasiliskavrn.shop.web.entity.Producer" fetch="select">
+        <many-to-one name="producer" class="com.vasiliskavrn.shop.web.entity.Producer" fetch="join">
             <column name="goods_produser" />
         </many-to-one>
-        <many-to-one name="sex" class="com.vasiliskavrn.shop.web.entity.Sex" fetch="select">
+        <many-to-one name="sex" class="com.vasiliskavrn.shop.web.entity.Sex" fetch="join">
             <column name="goods_sex" />
         </many-to-one>
-        <many-to-one name="size" class="com.vasiliskavrn.shop.web.entity.Size" fetch="select">
+        <many-to-one name="size" class="com.vasiliskavrn.shop.web.entity.Size" fetch="join">
             <column name="goods_size" />
         </many-to-one>
         <property name="goodsArt" type="string">

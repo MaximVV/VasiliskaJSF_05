@@ -48,7 +48,7 @@ public class DataHelper {
     }
 
     public List<Goods> getGoodsByLetter(Character letter) {
-        return getGoodsList("name", letter.toString(), MatchMode.START);
+        return getGoodsList("cloth.clothName", letter.toString(), MatchMode.START);
     }
 
     public List<Goods> getGoodsByBrand(String authorName) {
