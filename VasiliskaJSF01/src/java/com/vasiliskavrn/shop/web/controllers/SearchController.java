@@ -11,11 +11,13 @@ import javax.faces.event.ValueChangeEvent;
 import com.vasiliskavrn.shop.web.db.DataHelper;
 import com.vasiliskavrn.shop.web.entity.Goods;
 import com.vasiliskavrn.shop.web.enums.SearchType;
+import com.vasiliskavrn.shop.web.beans.Pager;
 
 @ManagedBean(eager = true)
 @SessionScoped
 public class SearchController implements Serializable {
 
+    private Pager<Goods> pager = new Pager<Goods>();
     private List<Goods> currentGoodsList; // текущий список книг для отображения
     private Long selectedAuthorId;// текущий автор книги из списка при редактировании книги
     private ArrayList<Integer> pageNumbers = new ArrayList<Integer>(); // кол-во страниц для постраничности
@@ -46,23 +48,25 @@ public class SearchController implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="запросы в базу">
     private void fillGoodsAll() {
-        currentGoodsList = DataHelper.getInstance().getAllGoods();
+        DataHelper.getInstance().getAllGoods(pager);
     }
 
     public String fillGoodsByCloth() {
+        
+        row = -1;
 
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 
         selectedClothId = Long.valueOf(params.get("cloth_id"));
 
         submitValues(' ', 1, selectedClothId, false);
-        currentGoodsList = DataHelper.getInstance().getGoodsByCloth(selectedClothId);
+        //DataHelper.getInstance().getGoodsByCloth(selectedClothId,pager);
 
         return "goods";
     }
     
     public String fillGoodsByLetter() {
-        
+        row = -1;
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         selectedLetter = params.get("letter").charAt(0);
         
@@ -76,7 +80,8 @@ public class SearchController implements Serializable {
     
 
     public String fillGoodsBySearch() {
-
+        
+        row = -1;
         submitValues(' ', 1, -1, false);
 
         if (currentSearchString.trim().length() == 0) {
@@ -102,6 +107,7 @@ public class SearchController implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="режим редактирования">
     public void showEdit() {
+        row = -1;
         editModeView = true;
     }
 
@@ -117,6 +123,32 @@ public class SearchController implements Serializable {
         Character[] letters = new Character[]{'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я',};
         return letters;
     }
+    
+    private transient int row = -1;
+
+    public int getRow() {
+        row += 1;
+        return row;
+    }    
+    
+    
+     //<editor-fold defaultstate="collapsed" desc="постраничность">
+    public void changeBooksCountOnPage(ValueChangeEvent e) {
+        row = -1;
+        cancelEditMode();
+        pager.setBooksCountOnPage(Integer.valueOf(e.getNewValue().toString()).intValue());
+        pager.setSelectedPageNumber(1);
+        DataHelper.getInstance().runCurrentCriteria();
+    }
+
+    public void selectPage() {
+        row = -1;
+        cancelEditMode();
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        pager.setSelectedPageNumber(Integer.valueOf(params.get("page_number")));
+        DataHelper.getInstance().runCurrentCriteria();
+    }
+    
 
     public void searchStringChanged(ValueChangeEvent e) {
         currentSearchString = e.getNewValue().toString();
@@ -136,14 +168,7 @@ public class SearchController implements Serializable {
 //        fillGoodssBySQL(currentSqlNoLimit);
     }
 
-    public void selectPage() {
-//        cancelEditMode();
-//        imitateLoading();
-//        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-//        selectedPageNumber = Integer.valueOf(params.get("page_number"));
-//        pageSelected = true;
-//        fillGoodssBySQL(currentSqlNoLimit);
-    }
+    
 
     private void fillPageNumbers(long totalGoodsCount, int goodsCountOnPage) {
 
@@ -244,7 +269,9 @@ public class SearchController implements Serializable {
         this.selectedAuthorId = selectedAuthorId;
     }
     
-    
+    public Pager getPager() {
+        return pager;
+    }
     
     
 }

@@ -29,6 +29,11 @@ import com.vasiliskavrn.shop.web.entity.HibernateUtil;
 
 @WebFilter(filterName = "HibernateSession",
 urlPatterns = "/*")
+
+//@WebFilter(filterName = "HibernateSession",
+//urlPatterns = {"/pages/*", "/PdfContent"})
+
+
 public class HibernateSession implements Filter {
 
     private SessionFactory sessionFactory;

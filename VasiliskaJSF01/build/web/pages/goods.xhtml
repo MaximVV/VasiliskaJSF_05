@@ -50,10 +50,10 @@
                     </h:panelGroup>
 
 
-                    <h:dataTable id="goodsList" value="#{searchController.currentGoodsList}" var="b" cellspacing="10px" columnClasses="col1, col2, col3">                                     
+                    <h:dataTable id="goodsList" value="#{searchController.pager.list}" var="b" cellspacing="10px" columnClasses="col1, col2, col3">                                     
                         <h:column>
                             <h:outputLink styleClass="content_link" value=""  target="_blank">
-                                <h:graphicImage  value="/ShowImage?id=#{b.image.idImage}" width="160" height="220"/>
+                                <h:graphicImage  value="/ShowImage?index=#{searchController.row}" width="160" height="220"/>
                                 <f:param name="id" value="#{b.image.idImage}"/>
                             </h:outputLink>
                         </h:column>
@@ -113,9 +113,10 @@
 
 
 
-                <h:form rendered="false" >
+                <h:form rendered="#{searchController.pager.totalBooksCount > 0}" > 
 
-                    <h:selectOneMenu styleClass="books_on_page_dropdown" value="#{searchController.goodsOnPage}" valueChangeListener="#{searchController.changeGoodsCountOnPage}">
+                    <h:selectOneMenu styleClass="books_on_page_dropdown" value="#{searchController.pager.booksCountOnPage}" 
+                                     valueChangeListener="#{searchController.changeGoodsCountOnPage}">
                         <f:selectItem itemValue="2" />
                         <f:selectItem itemValue="5" />
                         <f:selectItem itemValue="10" />
@@ -124,12 +125,12 @@
                     </h:selectOneMenu>
 
                     #{msg.pager}
-                    <ui:repeat value="#{searchController.pageNumbers}" var="pageNumber" >
+                    <ui:repeat value="#{searchController.pager.pageNumbers}" var="pageNumber" >
 
-                        <h:outputText value="#{pageNumber}" rendered="#{pageNumber == searchController.selectedPageNumber}" styleClass="selected_page"/>
+                        <h:outputText value="#{pageNumber}" rendered="#{pageNumber == searchController.pager.selectedPageNumber}" styleClass="selected_page"/>
 
 
-                        <h:commandLink value="#{pageNumber}" rendered="#{pageNumber != searchController.selectedPageNumber}" styleClass="page_number">
+                        <h:commandLink value="#{pageNumber}" rendered="#{pageNumber != searchController.pager.selectedPageNumber}" styleClass="page_number">
                             <f:param name="page_number" value="#{pageNumber}" />
                             <f:ajax onevent="showProgress" event="click" render=":goodsForm :goodsForm:goodsList :lettersForm :pages1 :pages2" listener="#{searchController.selectPage()}"/>
                         </h:commandLink>

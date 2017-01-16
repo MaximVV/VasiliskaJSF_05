@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.vasiliskavrn.shop.web.db.DataHelper;
+import com.vasiliskavrn.shop.web.entity.Goods;
+import com.vasiliskavrn.shop.web.controllers.SearchController;
+
 
 
 
@@ -33,8 +36,9 @@ public class ShowImage extends HttpServlet {
         response.setContentType("image/jpeg");
         OutputStream out = response.getOutputStream();
         try {
-            int id = Integer.valueOf(request.getParameter("id"));
-            byte[] image = DataHelper.getInstance().getImage(id);
+            int index = Integer.valueOf(request.getParameter("index"));
+            SearchController searchController = (SearchController) request.getSession(false).getAttribute("searchController");
+            byte[] image = ((Goods)searchController.getPager().getList().get(index)).getImage().getImageCotnent();
             response.setContentLength(image.length);
             out.write(image);
         } catch (Exception ex) {
