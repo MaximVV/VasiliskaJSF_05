@@ -1,5 +1,6 @@
 package com.vasiliskavrn.shop.web.db;
 
+import com.vasiliskavrn.shop.web.beans.Pager;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -14,25 +15,57 @@ import com.vasiliskavrn.shop.web.entity.Cloth;
 import com.vasiliskavrn.shop.web.entity.HibernateUtil;
 import com.vasiliskavrn.shop.web.entity.Image;
 
+
+
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Property;
+
 public class DataHelper {
 
     private SessionFactory sessionFactory = null;
     private static DataHelper dataHelper;
+    
+    private DetachedCriteria currentCriteria;
+    
+    private Pager currentPager;
 
     private DataHelper() {
         sessionFactory = HibernateUtil.getSessionFactory();
     }
 
     public static DataHelper getInstance() {
-        return dataHelper == null ? new DataHelper() : dataHelper;
+         if (dataHelper == null) {
+            dataHelper = new DataHelper();
+        }
+        return dataHelper;
     }
 
     private Session getSession() {
         return sessionFactory.getCurrentSession();
     }
    
-    public List<Goods> getAllGoods() {
-        return getSession().createCriteria(Goods.class).list();
+    public void getAllGoods(Pager pager) {
+        
+        currentPager = pager;
+        
+        Criteria criteria1 = getSession().createCriteria(Goods.class);
+        try
+        {
+              Integer total = (int) (long)  criteria1.setProjection(Projections.rowCount()).uniqueResult();
+              System.out.println(total);
+              
+              currentPager.setTotalBooksCount(total);              
+              currentCriteria = DetachedCriteria.forClass(Goods.class);
+             runCurrentCriteria();
+        }
+        catch(Exception e){ System.out.println("Ошибка!!!");
+        System.out.println(e);
+        
+        }
+        
+       // return getSession().createCriteria(Goods.class).list();
     }
 
     public List<Cloth> getAllCloths() {
@@ -77,5 +110,12 @@ public class DataHelper {
 
     private Object getFieldValue(String field, int id) {
         return getSession().createCriteria(Image.class).setProjection(Projections.property(field)).add(Restrictions.eq("idImage", id)).uniqueResult();
+    }
+    
+    public void runCurrentCriteria() {
+        System.out.println("Здесь!!!");
+        Criteria criteria = currentCriteria.addOrder(Order.asc("cloth")).getExecutableCriteria(getSession());
+        List<Goods> list = criteria.setFirstResult(currentPager.getFrom()).setMaxResults(currentPager.getTo()).list();
+        currentPager.setList(list);
     }
 }

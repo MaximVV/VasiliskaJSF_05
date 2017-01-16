@@ -14,7 +14,7 @@
         <property name="brandStatus" type="string">
             <column name="brand_status" length="1" />
         </property>
-        <set name="goodses" table="goods" inverse="true" lazy="true" fetch="select">
+        <set name="goodses" table="goods" inverse="true" lazy="true" fetch="join">
             <key>
                 <column name="goods_coun_br" />
             </key>
