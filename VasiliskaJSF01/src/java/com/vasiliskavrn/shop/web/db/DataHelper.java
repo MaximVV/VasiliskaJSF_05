@@ -25,10 +25,8 @@ import org.hibernate.criterion.Property;
 public class DataHelper {
 
     private SessionFactory sessionFactory = null;
-    private static DataHelper dataHelper;
-    
-    private DetachedCriteria currentCriteria;
-    
+    private static DataHelper dataHelper;    
+    private DetachedCriteria currentCriteria;   
     private Pager currentPager;
 
     private DataHelper() {
