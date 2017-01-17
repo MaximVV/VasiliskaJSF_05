@@ -112,10 +112,11 @@ public class SearchController implements Serializable {
     }
 
     public void cancelEditMode() {
-        editModeView = false;
-        for (Goods goods : currentGoodsList) {
+         editModeView = false;
+        for (Goods goods  : pager.getList()) {
             goods.setEdit(false);
         }
+       
     }
     //</editor-fold>
 
@@ -160,12 +161,11 @@ public class SearchController implements Serializable {
 
     //<editor-fold defaultstate="collapsed" desc="постраничность">
     public void changeGoodsCountOnPage(ValueChangeEvent e) {
-//        imitateLoading();
-//        cancelEditMode();
-//        pageSelected = false;
-//        goodssCountOnPage = Integer.valueOf(e.getNewValue().toString()).intValue();
-//        selectedPageNumber = 1;
-//        fillGoodssBySQL(currentSqlNoLimit);
+        row = -1;
+        cancelEditMode();
+        pager.setBooksCountOnPage(Integer.valueOf(e.getNewValue().toString()).intValue());
+        pager.setSelectedPageNumber(1);
+        DataHelper.getInstance().runCurrentCriteria();
     }
 
     
